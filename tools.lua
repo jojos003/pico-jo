@@ -23,18 +23,33 @@ function draw_sprites()
  end
 end
 
-function build_sprite()
- return {
-  x=0,y=0,
-  dx=0,dy=0,
-  anims={},
-  state=1,
-  flip=false
- }
+function build_sprite(x,y,w,h)
+ local s={}
+
+ s.x=x or 0
+ s.y=y or 0
+ s.dx=s.x
+ s.dy=s.dy
+
+ s.w=w or 8
+ s.h=h or 8
+
+ s.vx=0
+ s.vy=0
+
+ s.anims={}
+ s.state=1
+ s.flip=false
+
+ return s
 end
 
 function add_sprite(s)
  add(sprites,s)
+end
+
+function remove_sprite(s)
+ del(sprites,s)
 end
 
 function update_sprites()
@@ -58,6 +73,11 @@ function sprite_set_state(sp,st)
  
  reset_anim(sprite_anim(sp))
  sp.state=st
+end
+
+function sprites_collide(sp1,sp2)
+ return collide(sp1.x,sp1.y,sp1.w,sp1.h,
+   sp2.x,sp2.y,sp2.w,sp2.h)
 end
 
 -- Animations
@@ -103,4 +123,13 @@ end
 
 function flag_at(x,y)
  fget(tile_at(x,y))
+end
+
+-- utils
+
+function collide(x1,y1,w1,h1,x2,y2,w2,h2)
+ return x1 < x2+w2
+ and x1+w1 > x2
+ and y1 < y2+h2
+ and y1+h1 > y2
 end
