@@ -34,6 +34,11 @@ function build_sprite(x,y,w,h)
  s.w=w or 8
  s.h=h or 8
 
+ s.bx=0
+ s.by=0
+ s.bw=s.w
+ s.bh=s.h
+
  s.vx=0
  s.vy=0
 
@@ -76,8 +81,15 @@ function sprite_set_state(sp,st)
 end
 
 function sprites_collide(sp1,sp2)
- return collide(sp1.x,sp1.y,sp1.w,sp1.h,
-   sp2.x,sp2.y,sp2.w,sp2.h)
+ return collide(
+  sp1.x+sp1.bx,
+  sp1.y+sp1.by,
+  sp1.bw,
+  sp1.bh,
+  sp2.x+sp2.bx,
+  sp2.y+sp2.by,
+  sp2.bw,
+  sp2.bh)
 end
 
 -- Animations
